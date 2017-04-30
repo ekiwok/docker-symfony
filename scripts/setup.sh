@@ -1,3 +1,5 @@
+set -e
+
 apt-get update && apt-get install -y libcurl3-dev zlib1g-dev
 docker-php-ext-install curl zip
 
@@ -15,7 +17,9 @@ then
 fi
 
 php composer-setup.php --quiet
-RESULT=$?
 rm composer-setup.php
-apt-get remove libcurl3-dev zlib1g-dev
-exit $RESULT
+mv composer.phar /usr/bin/composer
+chmod +x /usr/bin/composer
+
+apt-get remove -y libcurl3-dev zlib1g-dev
+apt-get clean

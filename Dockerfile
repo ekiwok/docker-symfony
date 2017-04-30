@@ -1,9 +1,11 @@
 FROM php:7.1-fpm
 
-COPY base.ini /etc/php/
-COPY entrypoint.sh entrypoint.sh
-COPY setup.sh setup.sh
+COPY base.ini /usr/local/etc/php/conf.d/
+COPY scripts/entrypoint.sh /usr/bin/entrypoint.sh
+COPY scripts/setup.sh setup.sh
 
-RUN setup.sh && rm -f setup.sh
+RUN chmod +x /usr/bin/entrypoint.sh setup.sh && ./setup.sh && rm -f setup.sh
 
-CMD "entrypoint.sh"
+WORKDIR /var/www
+
+CMD "/usr/bin/entrypoint.sh"
